@@ -13,11 +13,10 @@ updateDjs = (obj) ->
 handleUserJoin = (user) ->
     data.host = API.getHost()
     data.mods = API.getModerators()
-    #data.users[user.id] = new User(user)
     data.userJoin(user)
     data.users[user.id].updateActivity()
     console.log user.username + " joined the room"
-    API.sendChat "/em: " + user.username + " has joined the Den."
+    API.sendChat "/em: " + user.username + " has joined the Room!"
 
 handleNewSong = (obj) ->
     data.intervalMessages()
@@ -27,7 +26,6 @@ handleNewSong = (obj) ->
         API.sendChat "/em: Just played " + data.currentsong.title + " by " + data.currentsong.author + ". Stats: Woots: " + data.currentwoots + ", Mehs: " + data.currentmehs + ", Loves: " + data.currentcurates + "."
         data.newSong()
         document.getElementById("button-vote-positive").click()
-        API.sendChat "YO SKRILL DROP IT HARD!"  if (data.currentsong.author.indexOf("Skrillex") isnt -1) or (data.currentsong.title.indexOf("Skrillex") isnt -1)
     if data.forceSkip # skip songs when song is over
         songId = obj.media.id
         setTimeout ->
@@ -39,13 +37,10 @@ handleNewSong = (obj) ->
 handleVote = (obj) ->
     data.users[obj.user.id].updateActivity()
     data.users[obj.user.id].updateVote(obj.vote)
-    #vote = (if obj.vote is 1 then "woot" else "meh")
-    #console.log obj.user.username + " voted " + vote
 
 handleUserLeave = (user)->
     data.host = API.getHost()
     data.mods = API.getModerators()
-    console.log user.username + " left the room"
     disconnectStats = {
         id : user.id
         time : new Date()
@@ -60,9 +55,7 @@ handleUserLeave = (user)->
         else
             i++
     data.userDisconnectLog.push(disconnectStats)
-    console.log 'User disconnect logged', data.userDisconnectLog
     data.users[user.id].inRoom(false)
-    #delete data.users[user.id]
 
 antispam = (chat)->
     #test if message contains plug.dj room link
@@ -74,7 +67,6 @@ antispam = (chat)->
             if !data.users[chat.fromID].protected
                 API.sendChat "Don't spam room links you ass clown"
                 API.moderateDeleteChat chat.chatID
-                #API.moderateKickUser chat.fromID, "Please don't spam links in this room."
             else
                 API.sendChat "I'm supposed to kick you, but you're just too darn pretty."
 

@@ -6,7 +6,6 @@ class RoomHelper
 		return false
 
 	userVoteRatio: (user)->
-		console.log "vote log pull for "+user.username+":",data.voteLog[user.id]
 		songVotes = data.voteLog[user.id]
 		votes = {
 			'woot':0,
@@ -19,7 +18,3 @@ class RoomHelper
 				votes['meh']++
 		votes['positiveRatio'] = (votes['woot'] / (votes['woot']+votes['meh'])).toFixed(2)
 		votes
-		
-
-	# roomVoteRatio: ->
-	# 	# ..

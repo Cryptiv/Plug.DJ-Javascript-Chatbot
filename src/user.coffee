@@ -52,4 +52,3 @@ class User
 	updateVote: (v)=>
 		if @isInRoom
 			data.voteLog[@user.id][data.currentsong.id] = v
-			console.log "Pushed vote("+v.toString()+") to "+@user.username+" for \""+data.currentsong.title+"\""

@@ -19,18 +19,11 @@ class settings
 		woots:0
 		mehs:0
 		curates:0
-	pupScriptUrl: 'http://den.johnback.us/js/pup.js'
+	pupScriptUrl: ''
 	afkTime: 12*60*1000#Time without activity to be considered afk. 12 minutes in milliseconds
 	songIntervalMessages: [
-		{interval:15,offset:0,msg:"/fb"}
-		{interval:21,offset:0,msg:"Wondering what songs we consider overplayed? Learn more by typing /overplayed"}
-		{interval:19,offset:0,msg:"Are you new to the den?  Type /roomhelp to get started."}
-		{interval:17,offset:0,msg:"Wondering how the den's Power Users never get removed for being afk? Type /whywoot to find out"}
-		{interval:23,offset:0,msg:"Theres a reason Justin Beiber isn't played here. We restrict songs to certain genres. Learn more by typing /theme"}
-		{interval:50,offset:17,msg:"Fun fact: 0 of current and past moderators ASKED to be a moderator.  They earned it by being good users.  Shocking, I know."}
-		{interval:100,offset:23,msg:"Did you miss our first Promoters Night?  Check out all the songs played that night here: http://goo.gl/fxEek"}
+		{interval:15,offset:0,msg:"I'm a bot!"}
 	]
-	reminders: []#mod set reminders at various song intervals
 	songCount: 0
 
 	startup: =>
@@ -58,14 +51,6 @@ class settings
 		else
 			@users[u.id] = new User(u)
 			@voteLog[u.id] = {}
-
-	reminderCheck: =>
-		i=0
-		for reminder in @reminders
-			console.log 'arr > item', @reminders,@reminders[i]
-			i++
-			# if @reminders[r]['songCount'] == @songCount
-			# 	API.sendChat @reminders.splice(r,1)[0]['msg']
 
 	setInternalWaitlist: =>
 		boothWaitlist = API.getDJs().slice(1)#remove current dj
@@ -107,10 +92,9 @@ class settings
 		    async: this.async,
 		    dataType: 'json',
 		    contentType: 'application/json'
-		}).done(->
+		}).done ->
 			if callback?
 				callback()
-			)
 
 	unlockBooth: (callback=null)->
 		$.ajax({
@@ -123,10 +107,9 @@ class settings
 		    async: this.async,
 		    dataType: 'json',
 		    contentType: 'application/json'
-		}).done(->
+		}).done ->
 			if callback?
 				callback()
-			)
 
 
 data = new settings()
@@ -185,7 +168,6 @@ class User
 	updateVote: (v)=>
 		if @isInRoom
 			data.voteLog[@user.id][data.currentsong.id] = v
-			console.log "Pushed vote("+v.toString()+") to "+@user.username+" for \""+data.currentsong.title+"\""
 
 class RoomHelper
 	lookupUser: (username)->
@@ -195,7 +177,6 @@ class RoomHelper
 		return false
 
 	userVoteRatio: (user)->
-		console.log "vote log pull for "+user.username+":",data.voteLog[user.id]
 		songVotes = data.voteLog[user.id]
 		votes = {
 			'woot':0,
@@ -208,13 +189,9 @@ class RoomHelper
 				votes['meh']++
 		votes['positiveRatio'] = (votes['woot'] / (votes['woot']+votes['meh'])).toFixed(2)
 		votes
-		
-
-	# roomVoteRatio: ->
-	# 	# ..
 
 pupOnline = ->
-	API.sendChat "WERF"
+	API.sendChat "Bot Online!"
 
 populateUserData = ->
 	users = API.getUsers()
@@ -250,7 +227,6 @@ afkCheck = ->
     if timeSinceLastActivity > data.afkTime #has been inactive longer than afk time limit
       if user.getIsDj()#if on stage
         secsLastActive = timeSinceLastActivity / 1000
-        #console.log user.getUser().username + ' last active ' + secsLastActive.toString() + ' secs ago'
         if user.getWarningCount() == 0
           user.warn()
           API.sendChat "@"+user.getUser().username+", I haven't seen you chat or vote in at least 12 minutes. Are you AFK?  If you don't show activity in 2 minutes I will remove you."
@@ -526,33 +502,6 @@ class cmdHelpCommand extends Command
 		
 
 
-class reminderCommand extends Command
-	init: ->
-		@command='/reminder'
-		@parseType='startsWith'
-		@rankPrivelege='mod'
-
-	functionality: ->
-		cmd = @msgData.message
-		if cmd.length>10
-			params = cmd.slice(10)
-			cmdPatt = /^"(.+)"\s(\d)$/
-			reminderParams = cmdPatt.exec(params)
-			if reminderParams? and reminderParams.length == 3
-				reminder = {
-					songCount : parseInt(reminderParams[2])+data.songCount
-					msg : reminderParams[1]
-				}
-				data.reminders.push reminder
-				API.sendChat "Ok I'm going to say '"+reminderParams[1]+"' in "+reminderParams[2]+" songs."
-			else
-				API.sendChat "look at that poopy ass syntax right there"
-				console.log cmd,cmdPatt,reminderParams
-		else
-			API.sendChat "ur syntax is just plain poopy"
-		
-
-
 class hugCommand extends Command
 	init: ->
 		@command='hugs pup'
@@ -561,16 +510,6 @@ class hugCommand extends Command
 
 	functionality: ->
 		API.sendChat "hugs @" + @msgData['from']
-
-
-class rapeCommand extends Command
-	init: ->
-		@command='rapes pup'
-		@parseType='exact'
-		@rankPrivelege='user'
-
-	functionality: ->
-		API.sendChat "slaps @" + @msgData['from']
 
 
 class tacoCommand extends Command
@@ -876,26 +815,6 @@ class badQualityCommand extends Command
 		msg = "Flagged for bad sound quality. Where do you get your music? The garbage can? Don't play this low quality tune again!"
 		API.sendChat msg
 
-class tableFlipCommand extends Command
-	init: ->
-		@command='/tableflip'
-		@parseType='exact'
-		@rankPrivelege='user'
-
-	functionality: ->
-		API.sendChat "(╯°□°）╯︵ ┻━┻"
-
-
-class tableFixCommand extends Command
-	init: ->
-		@command='/tablefix'
-		@parseType='exact'
-		@rankPrivelege='user'
-
-	functionality: ->
-		API.sendChat " ┬─┬ノ( º _ ºノ)"
-
-
 class downloadCommand extends Command
 	init: ->
 		@command='/download'
@@ -913,30 +832,6 @@ class downloadCommand extends Command
 		API.sendChat(msg)
 		
 
-
-class smokeCommand extends Command
-	init: ->
-		@command=['/smokesesh','/smoke','/dab']
-		@parseType='exact'
-		@rankPrivelege='user'
-
-	smoke: ->
-		r = Math.floor Math.random()*@responses.length 
-		return @responses[r]
-
-
-	functionality: ->
-		API.sendChat @smoke()
-
-	responses: [
-			"If we all had a bong we'd all get along.",
-			"/me rolls a joint for you.",
-			"Got anything to eat?",
-			"Y-y-you're crazy....",
-			"THE COLORS. THE FUCKIN COLORS!",
-			"Everyone needs to give me a hug.",
-			"Need to blaze til' my eyes glaze."
-		]
 
 class afksCommand extends Command
 	init: ->
@@ -1373,7 +1268,6 @@ class avgVoteRatioCommand extends Command
 
 cmds = [
 	hugCommand,
-	rapeCommand,
 	tacoCommand,
 	cookieCommand,
 	punishCommand,
@@ -1385,10 +1279,7 @@ cmds = [
 	sourceCommand,
 	wootCommand,
 	badQualityCommand,
-	tableFlipCommand,
-	tableFixCommand,
 	downloadCommand,
-	smokeCommand,
 	afksCommand,
 	allAfksCommand,
 	statusCommand,
@@ -1416,8 +1307,7 @@ cmds = [
 	avgVoteRatioCommand
 ]
 
-chatCommandDispatcher = (chat)-> 
-    #data.activity(chat)
+chatCommandDispatcher = (chat)->
     chatUniversals(chat)
     for cmd in cmds
     	c = new cmd(chat)
@@ -1439,11 +1329,10 @@ updateDjs = (obj) ->
 handleUserJoin = (user) ->
     data.host = API.getHost()
     data.mods = API.getModerators()
-    #data.users[user.id] = new User(user)
     data.userJoin(user)
     data.users[user.id].updateActivity()
     console.log user.username + " joined the room"
-    API.sendChat "/em: " + user.username + " has joined the Den."
+    API.sendChat "/em: " + user.username + " has joined the Room!"
 
 handleNewSong = (obj) ->
     data.intervalMessages()
@@ -1453,7 +1342,6 @@ handleNewSong = (obj) ->
         API.sendChat "/em: Just played " + data.currentsong.title + " by " + data.currentsong.author + ". Stats: Woots: " + data.currentwoots + ", Mehs: " + data.currentmehs + ", Loves: " + data.currentcurates + "."
         data.newSong()
         document.getElementById("button-vote-positive").click()
-        API.sendChat "YO SKRILL DROP IT HARD!"  if (data.currentsong.author.indexOf("Skrillex") isnt -1) or (data.currentsong.title.indexOf("Skrillex") isnt -1)
     if data.forceSkip # skip songs when song is over
         songId = obj.media.id
         setTimeout ->
@@ -1465,13 +1353,10 @@ handleNewSong = (obj) ->
 handleVote = (obj) ->
     data.users[obj.user.id].updateActivity()
     data.users[obj.user.id].updateVote(obj.vote)
-    #vote = (if obj.vote is 1 then "woot" else "meh")
-    #console.log obj.user.username + " voted " + vote
 
 handleUserLeave = (user)->
     data.host = API.getHost()
     data.mods = API.getModerators()
-    console.log user.username + " left the room"
     disconnectStats = {
         id : user.id
         time : new Date()
@@ -1486,9 +1371,7 @@ handleUserLeave = (user)->
         else
             i++
     data.userDisconnectLog.push(disconnectStats)
-    console.log 'User disconnect logged', data.userDisconnectLog
     data.users[user.id].inRoom(false)
-    #delete data.users[user.id]
 
 antispam = (chat)->
     #test if message contains plug.dj room link
@@ -1500,7 +1383,6 @@ antispam = (chat)->
             if !data.users[chat.fromID].protected
                 API.sendChat "Don't spam room links you ass clown"
                 API.moderateDeleteChat chat.chatID
-                #API.moderateKickUser chat.fromID, "Please don't spam links in this room."
             else
                 API.sendChat "I'm supposed to kick you, but you're just too darn pretty."
 

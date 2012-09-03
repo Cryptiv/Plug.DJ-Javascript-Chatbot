@@ -6,7 +6,6 @@ afkCheck = ->
     if timeSinceLastActivity > data.afkTime #has been inactive longer than afk time limit
       if user.getIsDj()#if on stage
         secsLastActive = timeSinceLastActivity / 1000
-        #console.log user.getUser().username + ' last active ' + secsLastActive.toString() + ' secs ago'
         if user.getWarningCount() == 0
           user.warn()
           API.sendChat "@"+user.getUser().username+", I haven't seen you chat or vote in at least 12 minutes. Are you AFK?  If you don't show activity in 2 minutes I will remove you."

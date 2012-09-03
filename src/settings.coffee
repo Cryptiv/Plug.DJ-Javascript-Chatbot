@@ -19,18 +19,11 @@ class settings
 		woots:0
 		mehs:0
 		curates:0
-	pupScriptUrl: 'http://den.johnback.us/js/pup.js'
+	pupScriptUrl: ''
 	afkTime: 12*60*1000#Time without activity to be considered afk. 12 minutes in milliseconds
 	songIntervalMessages: [
-		{interval:15,offset:0,msg:"/fb"}
-		{interval:21,offset:0,msg:"Wondering what songs we consider overplayed? Learn more by typing /overplayed"}
-		{interval:19,offset:0,msg:"Are you new to the den?  Type /roomhelp to get started."}
-		{interval:17,offset:0,msg:"Wondering how the den's Power Users never get removed for being afk? Type /whywoot to find out"}
-		{interval:23,offset:0,msg:"Theres a reason Justin Beiber isn't played here. We restrict songs to certain genres. Learn more by typing /theme"}
-		{interval:50,offset:17,msg:"Fun fact: 0 of current and past moderators ASKED to be a moderator.  They earned it by being good users.  Shocking, I know."}
-		{interval:100,offset:23,msg:"Did you miss our first Promoters Night?  Check out all the songs played that night here: http://goo.gl/fxEek"}
+		{interval:15,offset:0,msg:"I'm a bot!"}
 	]
-	reminders: []#mod set reminders at various song intervals
 	songCount: 0
 
 	startup: =>
@@ -58,14 +51,6 @@ class settings
 		else
 			@users[u.id] = new User(u)
 			@voteLog[u.id] = {}
-
-	reminderCheck: =>
-		i=0
-		for reminder in @reminders
-			console.log 'arr > item', @reminders,@reminders[i]
-			i++
-			# if @reminders[r]['songCount'] == @songCount
-			# 	API.sendChat @reminders.splice(r,1)[0]['msg']
 
 	setInternalWaitlist: =>
 		boothWaitlist = API.getDJs().slice(1)#remove current dj
@@ -107,10 +92,9 @@ class settings
 		    async: this.async,
 		    dataType: 'json',
 		    contentType: 'application/json'
-		}).done(->
+		}).done ->
 			if callback?
 				callback()
-			)
 
 	unlockBooth: (callback=null)->
 		$.ajax({
@@ -123,10 +107,9 @@ class settings
 		    async: this.async,
 		    dataType: 'json',
 		    contentType: 'application/json'
-		}).done(->
+		}).done ->
 			if callback?
 				callback()
-			)
 
 
 data = new settings()

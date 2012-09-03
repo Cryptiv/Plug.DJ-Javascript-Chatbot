@@ -1,6 +1,5 @@
 cmds = [
 	hugCommand,
-	rapeCommand,
 	tacoCommand,
 	cookieCommand,
 	punishCommand,
@@ -12,10 +11,7 @@ cmds = [
 	sourceCommand,
 	wootCommand,
 	badQualityCommand,
-	tableFlipCommand,
-	tableFixCommand,
 	downloadCommand,
-	smokeCommand,
 	afksCommand,
 	allAfksCommand,
 	statusCommand,

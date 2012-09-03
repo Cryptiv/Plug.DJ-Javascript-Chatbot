@@ -1,5 +1,4 @@
-chatCommandDispatcher = (chat)-> 
-    #data.activity(chat)
+chatCommandDispatcher = (chat)->
     chatUniversals(chat)
     for cmd in cmds
     	c = new cmd(chat)

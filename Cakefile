@@ -11,9 +11,7 @@ appFiles  = [
 	'commands/command'
 	'commands/protect'
 	'commands/cmdhelp'
-	'commands/reminder'
 	'commands/hug'
-	'commands/rape'
 	'commands/taco'
 	'commands/cookie'
 	'commands/punish'
@@ -25,10 +23,7 @@ appFiles  = [
 	'commands/source'
 	'commands/woot'
 	'commands/bad_quality'
-	'commands/table_flip'
-	'commands/table_fix'
 	'commands/download'
-	'commands/smoke'
 	'commands/afks'
 	'commands/all_afks'
 	'commands/status'
@@ -74,9 +69,9 @@ task 'build', 'Build single application file from source files', ->
 						throw err if err
 			process() if --remaining is 0
 	process = ->
-		fs.writeFile 'bin/pup.coffee', appContents.join('\n\n'), 'utf8', (err) ->
+		fs.writeFile 'bin/bot.coffee', appContents.join('\n\n'), 'utf8', (err) ->
 			throw err if err
-			exec 'coffee --compile bin/pup.coffee', (err, stdout, stderr) ->
+			exec 'coffee --compile bin/bot.coffee', (err, stdout, stderr) ->
 				throw err if err
 				console.log stdout + stderr
 				console.log 'Done'
