@@ -840,7 +840,7 @@ Say you want users to be able to say `/fb`, `/facebook`, or `/group`.  Instead o
 ```Coffeescript
 class fbCommand extends Command
   init: ->
-    @command='/fb'
+    @command= ['/fb', '/facebook', '/group']
     @parseType='exact'
     @rankPrivelege='user'
 ```
