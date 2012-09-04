@@ -725,8 +725,10 @@ Our command will:
 All commands for the bot called by users are located in the `commands` directory.  Our command will be called with `/fb`, so lets name the file `fb.coffee`.
 
 In `fb.coffee` we first declare the new command with a line like:
-    
-    class fbCommand extends Commmand
+
+```Coffeescript
+class fbCommand extends Commmand
+```
 
 This bot API has a base `Command` class that handles basic parsing and [ACL Permissions](http://en.wikipedia.org/wiki/Access_control_list).  Thanks to this class, we just need to define 3 variables when we initialize:
 * `@command`
@@ -784,41 +786,45 @@ First, we need to add the new commands file to our Coffeescript build file in th
 
 `Cakefile`:
 
-    fs     = require 'fs'
-    {exec} = require 'child_process'
+```Coffeescript
+fs     = require 'fs'
+{exec} = require 'child_process'
 
-    appFiles  = [
-      # omit src/ and .coffee to make the below lines a little shorter
-      'settings'
-      'user'
-      'room_helper'
-      
-      ...
+appFiles  = [
+  # omit src/ and .coffee to make the below lines a little shorter
+  'settings'
+  'user'
+  'room_helper'
+  
+  ...
 
-      'commands/commands'
-      'commands/disconnect_lookup'
-      'commands/fb'           ## Our new facebook command's file include!
-      'commands/vote_ratio'
-      'commands/average_vote_ratio'
-      'chat_commands'
+  'commands/commands'
+  'commands/disconnect_lookup'
+  'commands/fb'           ## Our new facebook command's file include!
+  'commands/vote_ratio'
+  'commands/average_vote_ratio'
+  'chat_commands'
 
-      ...
+  ...
+```
 
 And then we also need to open up `chat_commands.coffee` and add the class name to the array of commands, so that the chat dispatcher knows to test new messages for our new command.  Just like we included our fb.coffee file after the file for the `/dclookup` command, we can include our new class right after the `disconnectLookupCommand` class in the chat_commands array:
 
 `chat_commands.coffee`:
-  
-      ...
 
-      forceSkipCommand,
-      fbCommand,
-      cmdHelpCommand,
-      protectCommand,
-      disconnectLookupCommand,
-      fbCommand,              ## Our new facebook command's class!
-      voteRatioCommand,
-      avgVoteRatioCommand
-    ]
+```Coffeescript
+  ...
+
+  forceSkipCommand,
+  fbCommand,
+  cmdHelpCommand,
+  protectCommand,
+  disconnectLookupCommand,
+  fbCommand,              ## Our new facebook command's class!
+  voteRatioCommand,
+  avgVoteRatioCommand
+]
+```
 
 If we've done everything right, we should be able to compile and run our code (explained in [Compile How To Section](#how-to-compile-and-run)) and use our new command as such:
 
@@ -923,15 +929,19 @@ When you have coffeescript installed on your system, just open up a terminal/com
 
 Windows:
 
-    C:\Users\Backus\coding\Plug.DJ-Javascript-Chatbot>cake build
+```console
+C:\Users\Backus\coding\Plug.DJ-Javascript-Chatbot>cake build
 
-    Done
+Done
+```
 
 Linux:
 
-    john@backus-laptop:/var/www/Plug.DJ-Javascript-Chatbot$ cake build
+```console
+john@backus-laptop:/var/www/Plug.DJ-Javascript-Chatbot$ cake build
 
-    Done
+Done
+```
 
 The final javascript file should be output in 
 
@@ -941,10 +951,14 @@ Then you can either include the file locally, or put it on a server, and inject 
 
 Once you know where you are including your `bot.js` file from, you can simply type:
 
-    javascript:$.getScript('[YOUR INCLUDE LOCATION]');
+```Javascript
+javascript:$.getScript('[YOUR INCLUDE LOCATION]');
+```
 
 Into your web browser.  My file is usually on my server at `http://johnback.us/js/bot.js`, so my include would be:
 
-    javascript:$.getScript('http://johnback.us/bot.js');
+```Javascript
+javascript:$.getScript('http://johnback.us/bot.js');
+```
 
 That's all!
