@@ -7,15 +7,11 @@ class voteRatioCommand extends Command
 	functionality: ->
 		r = new RoomHelper()
 		msg = @msgData.message
-		if msg.length == 10
-			console.log "bitches want room ratio"
-			#r.roomVoteRatio()
-		else if msg.length > 12 #includes username
+		if msg.length > 12 #includes username
 			name = msg.substr(12)
 			u = r.lookupUser(name)
 			if u != false
 				votes = r.userVoteRatio(u)
-				console.log u.username + ' votes:',votes
 				msg = u.username + " has wooted "+votes['woot'].toString()+" time"
 				if votes['woot'] == 1
 					msg+=', '

@@ -15,7 +15,6 @@ handleUserJoin = (user) ->
     data.mods = API.getModerators()
     data.userJoin(user)
     data.users[user.id].updateActivity()
-    console.log user.username + " joined the room"
     API.sendChat "/em: " + user.username + " has joined the Room!"
 
 handleNewSong = (obj) ->

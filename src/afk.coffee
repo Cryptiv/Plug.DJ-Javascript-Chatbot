@@ -28,8 +28,6 @@ afkCheck = ->
               API.sendChat "@"+user.getUser().username+", you had 2 warnings. Please stay active by chatting or voting."
               API.moderateRemoveDJ id
               user.warn()
-        else if user.getWarningCount() >= 3#Remove failed?
-          console.log "Have already attempted removing " + user.getUser().username + " but they are still on deck."
       else
         user.notDj()
 

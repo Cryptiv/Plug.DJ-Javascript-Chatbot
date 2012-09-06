@@ -19,6 +19,8 @@
 
       this.userJoin = __bind(this.userJoin, this);
 
+      this.getRoomUrlPath = __bind(this.getRoomUrlPath, this);
+
       this.startup = __bind(this.startup, this);
 
     }
@@ -40,6 +42,8 @@
     settings.prototype.currentmehs = 0;
 
     settings.prototype.currentcurates = 0;
+
+    settings.prototype.roomUrlPath = null;
 
     settings.prototype.internalWaitlist = [];
 
@@ -76,7 +80,12 @@
     settings.prototype.songCount = 0;
 
     settings.prototype.startup = function() {
-      return this.launchTime = new Date();
+      this.launchTime = new Date();
+      return this.roomUrlPath = this.getRoomUrlPath();
+    };
+
+    settings.prototype.getRoomUrlPath = function() {
+      return window.location.pathname.replace(/\//g, '');
     };
 
     settings.prototype.newSong = function() {
@@ -84,7 +93,6 @@
       this.totalVotingData.mehs += this.currentmehs;
       this.totalVotingData.curates += this.currentcurates;
       this.setInternalWaitlist();
-      this.reminderCheck();
       this.currentsong = API.getMedia();
       if (this.currentsong !== null) {
         return this.currentsong;
@@ -130,11 +138,9 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         msg = _ref[_i];
         if (((this.songCount + msg['offset']) % msg['interval']) === 0) {
-          console.log(msg['msg']);
           _results.push(API.sendChat(msg['msg']));
         } else {
-          console.log(msg);
-          _results.push(console.log(this.songCount));
+          _results.push(void 0);
         }
       }
       return _results;
@@ -161,7 +167,7 @@
         data: JSON.stringify({
           service: "room.update_options",
           body: [
-            "dubstep-den", {
+            this.roomUrlPath, {
               "boothLocked": true,
               "waitListEnabled": true,
               "maxPlays": 1,
@@ -189,7 +195,7 @@
         data: JSON.stringify({
           service: "room.update_options",
           body: [
-            "dubstep-den", {
+            this.roomUrlPath, {
               "boothLocked": false,
               "waitListEnabled": true,
               "maxPlays": 1,
@@ -365,7 +371,6 @@
     data.djs = API.getDJs();
     data.mods = API.getModerators();
     data.host = API.getHost();
-    console.log('Users:', users);
     for (_i = 0, _len = users.length; _i < _len; _i++) {
       u = users[_i];
       data.users[u.id] = new User(u);
@@ -433,8 +438,6 @@
             } else {
               _results.push(void 0);
             }
-          } else if (user.getWarningCount() >= 3) {
-            _results.push(console.log("Have already attempted removing " + user.getUser().username + " but they are still on deck."));
           } else {
             _results.push(void 0);
           }
@@ -1478,7 +1481,6 @@
         userAdd = r.lookupUser(users[1]);
         if (userRemove === false || userAdd === false) {
           API.sendChat('Error parsing one or both names');
-          console.log('Err users', users, userRemove, userAdd);
           return false;
         } else {
           return data.lockBooth(function() {
@@ -1549,10 +1551,7 @@
         r = new RoomHelper();
         user = r.lookupUser(name);
         if (user !== false) {
-          API.moderateAddDJ(user.id);
-          return console.log("Adding User to DJ booth", user);
-        } else {
-          return console.log("could not find user with name " + name);
+          return API.moderateAddDJ(user.id);
         }
       }
     };
@@ -1893,14 +1892,11 @@
       var msg, name, r, u, votes;
       r = new RoomHelper();
       msg = this.msgData.message;
-      if (msg.length === 10) {
-        return console.log("bitches want room ratio");
-      } else if (msg.length > 12) {
+      if (msg.length > 12) {
         name = msg.substr(12);
         u = r.lookupUser(name);
         if (u !== false) {
           votes = r.userVoteRatio(u);
-          console.log(u.username + ' votes:', votes);
           msg = u.username + " has wooted " + votes['woot'].toString() + " time";
           if (votes['woot'] === 1) {
             msg += ', ';
@@ -1966,7 +1962,7 @@
 
   })(Command);
 
-  cmds = [hugCommand, tacoCommand, cookieCommand, punishCommand, newSongsCommand, whyWootCommand, themeCommand, rulesCommand, roomHelpCommand, sourceCommand, wootCommand, badQualityCommand, downloadCommand, afksCommand, allAfksCommand, statusCommand, unhookCommand, dieCommand, reloadCommand, lockCommand, unlockCommand, swapCommand, popCommand, pushCommand, overplayedCommand, uservoiceCommand, whyMehCommand, skipCommand, commandsCommand, resetAfkCommand, forceSkipCommand, fbCommand, cmdHelpCommand, protectCommand, reminderCommand, disconnectLookupCommand, voteRatioCommand, avgVoteRatioCommand];
+  cmds = [hugCommand, tacoCommand, cookieCommand, punishCommand, newSongsCommand, whyWootCommand, themeCommand, rulesCommand, roomHelpCommand, sourceCommand, wootCommand, badQualityCommand, downloadCommand, afksCommand, allAfksCommand, statusCommand, unhookCommand, dieCommand, reloadCommand, lockCommand, unlockCommand, swapCommand, popCommand, pushCommand, overplayedCommand, uservoiceCommand, whyMehCommand, skipCommand, commandsCommand, resetAfkCommand, forceSkipCommand, fbCommand, cmdHelpCommand, protectCommand, disconnectLookupCommand, voteRatioCommand, avgVoteRatioCommand];
 
   chatCommandDispatcher = function(chat) {
     var c, cmd, _i, _len, _results;
@@ -2003,7 +1999,6 @@
     data.mods = API.getModerators();
     data.userJoin(user);
     data.users[user.id].updateActivity();
-    console.log(user.username + " joined the room");
     return API.sendChat("/em: " + user.username + " has joined the Room!");
   };
 

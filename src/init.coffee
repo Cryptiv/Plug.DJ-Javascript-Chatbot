@@ -6,7 +6,6 @@ populateUserData = ->
 	data.djs = API.getDJs()
 	data.mods = API.getModerators()
 	data.host = API.getHost()
-	console.log 'Users:',users
 	for u in users
 		data.users[u.id] = new User(u)
 		data.voteLog[u.id] = {}

@@ -33,7 +33,6 @@ cmds = [
 	fbCommand,
 	cmdHelpCommand,
 	protectCommand,
-	reminderCommand,
 	disconnectLookupCommand,
 	voteRatioCommand,
 	avgVoteRatioCommand

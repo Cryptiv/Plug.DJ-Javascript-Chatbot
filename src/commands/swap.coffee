@@ -14,7 +14,6 @@ class swapCommand extends Command
 			userAdd = r.lookupUser users[1]
 			if userRemove == false or userAdd == false
 				API.sendChat 'Error parsing one or both names'
-				console.log 'Err users',users,userRemove,userAdd
 				return false
 			else
 				data.lockBooth(->

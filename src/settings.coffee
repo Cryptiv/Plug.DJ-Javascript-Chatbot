@@ -8,6 +8,7 @@ class settings
 	currentwoots: 0
 	currentmehs: 0
 	currentcurates: 0
+	roomUrlPath: null#for lock. 'dubstep-den' in 'http://plug.dj/dubstep-den/'
 	internalWaitlist: []
 	userDisconnectLog: []
 	voteLog: {}
@@ -28,6 +29,10 @@ class settings
 
 	startup: =>
 		@launchTime = new Date()
+		@roomUrlPath = @getRoomUrlPath()
+
+	getRoomUrlPath: =>
+		window.location.pathname.replace(/\//g,'')
 
 	newSong: ->
 		@totalVotingData.woots += @currentwoots
@@ -35,8 +40,6 @@ class settings
 		@totalVotingData.curates += @currentcurates
 
 		@setInternalWaitlist()
-
-		@reminderCheck()
 
 		@currentsong = API.getMedia()
 		if @currentsong != null
@@ -69,11 +72,7 @@ class settings
 		@songCount++
 		for msg in @songIntervalMessages
 			if ((@songCount+msg['offset']) % msg['interval']) == 0
-				console.log msg['msg']
 				API.sendChat msg['msg']
-			else
-				console.log msg
-				console.log @songCount
 
 	implode: =>
 		for item,val of @
@@ -87,7 +86,7 @@ class settings
 		    type: 'POST',
 		    data: JSON.stringify({
 		        service: "room.update_options",
-		        body: ["dubstep-den",{"boothLocked":true,"waitListEnabled":true,"maxPlays":1,"maxDJs":5}]
+		        body: [@roomUrlPath,{"boothLocked":true,"waitListEnabled":true,"maxPlays":1,"maxDJs":5}]
 		    }),
 		    async: this.async,
 		    dataType: 'json',
@@ -102,7 +101,7 @@ class settings
 		    type: 'POST',
 		    data: JSON.stringify({
 		        service: "room.update_options",
-		        body: ["dubstep-den",{"boothLocked":false,"waitListEnabled":true,"maxPlays":1,"maxDJs":5}]
+		        body: [@roomUrlPath,{"boothLocked":false,"waitListEnabled":true,"maxPlays":1,"maxDJs":5}]
 		    }),
 		    async: this.async,
 		    dataType: 'json',

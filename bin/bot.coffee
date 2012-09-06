@@ -8,6 +8,7 @@ class settings
 	currentwoots: 0
 	currentmehs: 0
 	currentcurates: 0
+	roomUrlPath: null#for lock. 'dubstep-den' in 'http://plug.dj/dubstep-den/'
 	internalWaitlist: []
 	userDisconnectLog: []
 	voteLog: {}
@@ -28,6 +29,10 @@ class settings
 
 	startup: =>
 		@launchTime = new Date()
+		@roomUrlPath = @getRoomUrlPath()
+
+	getRoomUrlPath: =>
+		window.location.pathname.replace(/\//g,'')
 
 	newSong: ->
 		@totalVotingData.woots += @currentwoots
@@ -35,8 +40,6 @@ class settings
 		@totalVotingData.curates += @currentcurates
 
 		@setInternalWaitlist()
-
-		@reminderCheck()
 
 		@currentsong = API.getMedia()
 		if @currentsong != null
@@ -69,11 +72,7 @@ class settings
 		@songCount++
 		for msg in @songIntervalMessages
 			if ((@songCount+msg['offset']) % msg['interval']) == 0
-				console.log msg['msg']
 				API.sendChat msg['msg']
-			else
-				console.log msg
-				console.log @songCount
 
 	implode: =>
 		for item,val of @
@@ -87,7 +86,7 @@ class settings
 		    type: 'POST',
 		    data: JSON.stringify({
 		        service: "room.update_options",
-		        body: ["dubstep-den",{"boothLocked":true,"waitListEnabled":true,"maxPlays":1,"maxDJs":5}]
+		        body: [@roomUrlPath,{"boothLocked":true,"waitListEnabled":true,"maxPlays":1,"maxDJs":5}]
 		    }),
 		    async: this.async,
 		    dataType: 'json',
@@ -102,7 +101,7 @@ class settings
 		    type: 'POST',
 		    data: JSON.stringify({
 		        service: "room.update_options",
-		        body: ["dubstep-den",{"boothLocked":false,"waitListEnabled":true,"maxPlays":1,"maxDJs":5}]
+		        body: [@roomUrlPath,{"boothLocked":false,"waitListEnabled":true,"maxPlays":1,"maxDJs":5}]
 		    }),
 		    async: this.async,
 		    dataType: 'json',
@@ -198,7 +197,6 @@ populateUserData = ->
 	data.djs = API.getDJs()
 	data.mods = API.getModerators()
 	data.host = API.getHost()
-	console.log 'Users:',users
 	for u in users
 		data.users[u.id] = new User(u)
 		data.voteLog[u.id] = {}
@@ -249,8 +247,6 @@ afkCheck = ->
               API.sendChat "@"+user.getUser().username+", you had 2 warnings. Please stay active by chatting or voting."
               API.moderateRemoveDJ id
               user.warn()
-        else if user.getWarningCount() >= 3#Remove failed?
-          console.log "Have already attempted removing " + user.getUser().username + " but they are still on deck."
       else
         user.notDj()
 
@@ -981,7 +977,6 @@ class swapCommand extends Command
 			userAdd = r.lookupUser users[1]
 			if userRemove == false or userAdd == false
 				API.sendChat 'Error parsing one or both names'
-				console.log 'Err users',users,userRemove,userAdd
 				return false
 			else
 				data.lockBooth(->
@@ -1023,9 +1018,6 @@ class pushCommand extends Command
 			user = r.lookupUser(name)
 			if user != false
 				API.moderateAddDJ user.id
-				console.log "Adding User to DJ booth", user
-			else
-				console.log "could not find user with name "+name
 
 class resetAfkCommand extends Command
 	init: ->
@@ -1216,15 +1208,11 @@ class voteRatioCommand extends Command
 	functionality: ->
 		r = new RoomHelper()
 		msg = @msgData.message
-		if msg.length == 10
-			console.log "bitches want room ratio"
-			#r.roomVoteRatio()
-		else if msg.length > 12 #includes username
+		if msg.length > 12 #includes username
 			name = msg.substr(12)
 			u = r.lookupUser(name)
 			if u != false
 				votes = r.userVoteRatio(u)
-				console.log u.username + ' votes:',votes
 				msg = u.username + " has wooted "+votes['woot'].toString()+" time"
 				if votes['woot'] == 1
 					msg+=', '
@@ -1301,7 +1289,6 @@ cmds = [
 	fbCommand,
 	cmdHelpCommand,
 	protectCommand,
-	reminderCommand,
 	disconnectLookupCommand,
 	voteRatioCommand,
 	avgVoteRatioCommand
@@ -1331,7 +1318,6 @@ handleUserJoin = (user) ->
     data.mods = API.getModerators()
     data.userJoin(user)
     data.users[user.id].updateActivity()
-    console.log user.username + " joined the room"
     API.sendChat "/em: " + user.username + " has joined the Room!"
 
 handleNewSong = (obj) ->
