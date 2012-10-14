@@ -36,6 +36,7 @@ class newSongsCommand extends Command
 		msg = "Everyone's heard that " + selections['artist'] +
 		" track! Get new music from " + selections['channels'][0] + " , "
 		+ selections['channels'][1] + " or " + selections['channels'][2];
+
 		API.sendChat(msg)
 
 	# memChanLen = memberChannels.length
