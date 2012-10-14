@@ -1,4 +1,4 @@
-
+﻿
 updateVotes = (obj) ->
     data.currentwoots = obj.positive
     data.currentmehs = obj.negative
@@ -22,7 +22,7 @@ handleNewSong = (obj) ->
     if(data.currentsong == null)
         data.newSong()#first song since launch
     else
-        API.sendChat "/em: Just played " + data.currentsong.title + " by " + data.currentsong.author + ". Stats: Woots: " + data.currentwoots + ", Mehs: " + data.currentmehs + ", Loves: " + data.currentcurates + "."
+        "/em: Just played " + data.currentsong.title + " by " + data.currentsong.author + ". Stats: Woots: " + data.currentwoots + ", Mehs: " + data.currentmehs + ", Loves: " + data.currentcurates + "."
         data.newSong()
         document.getElementById("button-vote-positive").click()
     if data.forceSkip # skip songs when song is over

@@ -34,10 +34,8 @@ class newSongsCommand extends Command
 			selections['artist'] = chooseRandom arts
 
 		msg = "Everyone's heard that " + selections['artist'] +
-		" track! Get new music from http://youtube.com/" + selections['channels'][0] +
-		" http://youtube.com/" + selections['channels'][1] + 
-		" or http://youtube.com/" + selections['channels'][2];
-
+		" track! Get new music from " + selections['channels'][0] + " , "
+		+ selections['channels'][1] + " or " + selections['channels'][2];
 		API.sendChat(msg)
 
 	# memChanLen = memberChannels.length
@@ -53,56 +51,17 @@ class newSongsCommand extends Command
  #      API.sendChat "Everyone's heard that " + artists[a1] + " track! Get new music from http://youtube.com/" + mchan1 + " http://youtube.com/" + mchan2 + " or http://youtube.com/" + chan
 		
 	memberChannels: [
-		"JitterStep",
-		"MistaDubstep",
-		"DubStationPromotions",
-		"UndergroundDubstep",
-		"JesusDied4Dubstep",
-		"DarkstepWarrior",
-		"BombshockDubstep",
-		"Sharestep"
+		"http://www.youtube.com/indieplus4"
 	]
 	channels: [
-		"BassRape",
-		"Mudstep",
-		"WobbleCraftDubz",
-		"MonstercatMedia",
-		"UKFdubstep",
-		"DropThatBassline",
-		"Dubstep",
-		"VitalDubstep",
-		"AirwaveDubstepTV",
-		"EpicNetworkMusic",
-		"NoOffenseDubstep",
-		"InspectorDubplate",
-		"ReptileDubstep",
-		"MrMoMDubstep",
-		"FrixionNetwork",
-		"IcyDubstep",
-		"DubstepWeed",
-		"VhileMusic",
-		"LessThan3Dubstep",
-		"PleaseMindTheDUBstep",
-		"ClownDubstep",
-		"TheULTRADUBSTEP",
-		"DuBM0nkeyz",
-		"DubNationUK",
-		"TehDubstepChannel",
-		"BassDropMedia",
-		"USdubstep",
-		"UNITEDubstep" 
+		"http://thekollection.com/category/indie/",
+		"http://wearehunted.com/a/#/emerging/",
+		"http://www.facebook.com/FringeMusicFix",
+		"http://www.youtube.com/musicianswanted"
 	]
 	artists: [
-		"Skrillex",
-		"Doctor P",
-		"Excision",
-		"Flux Pavilion",
-		"Knife Party",
-		"Krewella",
-		"Rusko",
-		"Bassnectar",
-		"Nero",
-		"Deadmau5"
-		"Borgore"
-		"Zomboy"
+		"Taylor Swift",
+		"Justin Beiber",
+		"One Direction",
+		"Kanye West"
 	]

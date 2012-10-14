@@ -1,6 +1,6 @@
 class hugCommand extends Command
 	init: ->
-		@command='hugs pup'
+		@command='hugs bot'
 		@parseType='exact'
 		@rankPrivelege='user'
 

@@ -72,7 +72,7 @@ class settings
 		@songCount++
 		for msg in @songIntervalMessages
 			if ((@songCount+msg['offset']) % msg['interval']) == 0
-				API.sendChat msg['msg']
+				msg['msg']
 
 	implode: =>
 		for item,val of @

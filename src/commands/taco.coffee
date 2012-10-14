@@ -1,19 +1,19 @@
 class tacoCommand extends Command
 	init: ->
-		@command='taco'
+		@command='pizza'
 		@parseType='startsWith'
 		@rankPrivelege='user'
 
 	randomTaco: ->
 		tacos = [
-				"Mexican Pizza",
-				"Chicken Soft Taco",
-				"Double Decker Taco",
-				"Volcano Taco Supreme",
-				"Crunchy Taco Supreme",
-				"Grilled Steak Soft Taco",
-				"Cheesy Gordita Crunch",
-				"Doritos Locos Taco"
+				"cheese pizza",
+				"pepperoni pizza",
+				"hawaiian pizza",
+				"BBQ chicken pizza",
+				"anchovies pizza",
+				"DNCH turkey pizza",
+				"Adam's pepperoni pizza",
+				"vegan pizza"
 			];
 		r = Math.floor Math.random()*tacos.length
 		return tacos[r]

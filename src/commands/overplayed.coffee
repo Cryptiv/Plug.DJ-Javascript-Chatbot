@@ -1,6 +1,6 @@
 class overplayedCommand extends Command
 	init: ->
-		@command='/overplayed'
+		@command=''
 		@parseType='exact'
 		@rankPrivelege='user'
 

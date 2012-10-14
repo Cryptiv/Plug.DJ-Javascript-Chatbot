@@ -5,7 +5,7 @@ class wootCommand extends Command
 		@rankPrivelege='user'
 
 	functionality: ->
-		msg = "Please WOOT on DJ Booth and support your fellow DJs! AutoWoot: http://bit.ly/Lwcis0"
+		msg = "DANCE!"
 		if((nameIndex = @msgData.message.indexOf('@')) != -1)
 			API.sendChat @msgData.message.substr(nameIndex) + ', ' + msg
 		else

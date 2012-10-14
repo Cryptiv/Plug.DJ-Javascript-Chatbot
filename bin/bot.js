@@ -138,7 +138,7 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         msg = _ref[_i];
         if (((this.songCount + msg['offset']) % msg['interval']) === 0) {
-          _results.push(API.sendChat(msg['msg']));
+          _results.push(msg['msg']);
         } else {
           _results.push(void 0);
         }
@@ -409,7 +409,7 @@
           secsLastActive = timeSinceLastActivity / 1000;
           if (user.getWarningCount() === 0) {
             user.warn();
-            _results.push(API.sendChat("@" + user.getUser().username + ", I haven't seen you chat or vote in at least 12 minutes. Are you AFK?  If you don't show activity in 2 minutes I will remove you."));
+            _results.push("@" + user.getUser().username + ", I haven't seen you chat or vote in at least 12 minutes. Are you AFK?  If you don't show activity in 2 minutes I will remove you.");
           } else if (user.getWarningCount() === 1) {
             lastWarned = user.getLastWarning();
             timeSinceLastWarning = now.getTime() - lastWarned.getTime();
@@ -418,7 +418,7 @@
               user.warn();
               warnMsg = "@" + user.getUser().username;
               warnMsg += ", I haven't seen you chat or vote in at least 14 minutes now.  This is your second and FINAL warning.  If you do not chat or vote in the next minute I will remove you.";
-              _results.push(API.sendChat(warnMsg));
+              _results.push(warnMsg);
             } else {
               _results.push(void 0);
             }
@@ -429,8 +429,7 @@
             if (timeSinceLastWarning > oneMinute) {
               DJs = API.getDJs();
               if (DJs.length > 0 && DJs[0].id !== user.getUser().id) {
-                API.sendChat("@" + user.getUser().username + ", you had 2 warnings. Please stay active by chatting or voting.");
-                API.moderateRemoveDJ(id);
+                "@" + user.getUser().username + ", you had 2 warnings. Please stay active by chatting or voting.";
                 _results.push(user.warn());
               } else {
                 _results.push(void 0);
@@ -804,7 +803,7 @@
     }
 
     hugCommand.prototype.init = function() {
-      this.command = 'hugs pup';
+      this.command = 'hugs bot';
       this.parseType = 'exact';
       return this.rankPrivelege = 'user';
     };
@@ -826,14 +825,14 @@
     }
 
     tacoCommand.prototype.init = function() {
-      this.command = 'taco';
+      this.command = 'pizza';
       this.parseType = 'startsWith';
       return this.rankPrivelege = 'user';
     };
 
     tacoCommand.prototype.randomTaco = function() {
       var r, tacos;
-      tacos = ["Mexican Pizza", "Chicken Soft Taco", "Double Decker Taco", "Volcano Taco Supreme", "Crunchy Taco Supreme", "Grilled Steak Soft Taco", "Cheesy Gordita Crunch", "Doritos Locos Taco"];
+      tacos = ["cheese pizza", "pepperoni pizza", "hawaiian pizza", "BBQ chicken pizza", "anchovies pizza", "DNCH turkey pizza", "Adam's pepperoni pizza", "vegan pizza"];
       r = Math.floor(Math.random() * tacos.length);
       return tacos[r];
     };
@@ -914,7 +913,7 @@
 
     punishCommand.prototype.getPunishment = function(username) {
       var p, punishment, punishments;
-      punishments = ["/me rubs sandpaper on @{victim}'s scrotum", "/me pokes @{victim} in the eyes", "/me throws sand in @{victim}'s eyes", "/me makes @{victim}'s mother cry", "/me penetrates @{victim} with a sharpie", "/me pinches @{victim}'s nipples super hard", "/me gives @{victim} a wet willy"];
+      punishments = ["/me rubs sandpaper on @{victim}'s scrotum", "/me pokes @{victim} in the eyes", "/me throws sand in @{victim}'s eyes", "/me makes @{victim}'s mother cry", "/me penetrates @{victim} with a sharpie", "/me pinches @{victim}'s nipples super hard", "/me gives @{victim} a wet willy", "/me pulls @{victim}'s hair out", "/me gives @{victim} a paper cut", "/me ties @{victim} upside down by their ankles"];
       p = Math.floor(Math.random() * punishments.length);
       punishment = punishments[p].replace('{victim}', username);
       return punishment;
@@ -991,15 +990,16 @@
       } else {
         selections['artist'] = chooseRandom(arts);
       }
-      msg = "Everyone's heard that " + selections['artist'] + " track! Get new music from http://youtube.com/" + selections['channels'][0] + " http://youtube.com/" + selections['channels'][1] + " or http://youtube.com/" + selections['channels'][2];
+      msg = "Everyone's heard that " + selections['artist'] + " track! Get new music from " + selections['channels'][0] + " , ";
+      +selections['channels'][1] + " or " + selections['channels'][2];
       return API.sendChat(msg);
     };
 
-    newSongsCommand.prototype.memberChannels = ["JitterStep", "MistaDubstep", "DubStationPromotions", "UndergroundDubstep", "JesusDied4Dubstep", "DarkstepWarrior", "BombshockDubstep", "Sharestep"];
+    newSongsCommand.prototype.memberChannels = ["http://www.youtube.com/indieplus4"];
 
-    newSongsCommand.prototype.channels = ["BassRape", "Mudstep", "WobbleCraftDubz", "MonstercatMedia", "UKFdubstep", "DropThatBassline", "Dubstep", "VitalDubstep", "AirwaveDubstepTV", "EpicNetworkMusic", "NoOffenseDubstep", "InspectorDubplate", "ReptileDubstep", "MrMoMDubstep", "FrixionNetwork", "IcyDubstep", "DubstepWeed", "VhileMusic", "LessThan3Dubstep", "PleaseMindTheDUBstep", "ClownDubstep", "TheULTRADUBSTEP", "DuBM0nkeyz", "DubNationUK", "TehDubstepChannel", "BassDropMedia", "USdubstep", "UNITEDubstep"];
+    newSongsCommand.prototype.channels = ["http://thekollection.com/category/indie/", "http://wearehunted.com/a/#/emerging/", "http://www.facebook.com/FringeMusicFix", "http://www.youtube.com/musicianswanted"];
 
-    newSongsCommand.prototype.artists = ["Skrillex", "Doctor P", "Excision", "Flux Pavilion", "Knife Party", "Krewella", "Rusko", "Bassnectar", "Nero", "Deadmau5", "Borgore", "Zomboy"];
+    newSongsCommand.prototype.artists = ["Taylor Swift", "Justin Beiber", "One Direction", "Kanye West"];
 
     return newSongsCommand;
 
@@ -1021,7 +1021,7 @@
 
     whyWootCommand.prototype.functionality = function() {
       var msg, nameIndex;
-      msg = "We dislike AFK djs. We calculate your AFK status by checking the last time you			Woot'd or spoke. If you don't woot, I'll automagically remove you. Use our AutoWoot			script to avoid being removed: http://bit.ly/McZdWw";
+      msg = "It's nice and you get points.";
       if ((nameIndex = this.msgData.message.indexOf('@')) !== -1) {
         return API.sendChat(this.msgData.message.substr(nameIndex) + ', ' + msg);
       } else {
@@ -1049,8 +1049,8 @@
 
     themeCommand.prototype.functionality = function() {
       var msg;
-      msg = "Any type of Bass Music is allowed here. Including Dubstep, Complextro, Drum and Bass, ";
-      msg += "Garage, Breakbeat, Hardstyle, Moombahton, HEAVY EDM, House, Electro, and Trance!!";
+      msg = "We play primarily Indie Rock, Pop, Folk and Electronic but ALL GENRES ARE ALWAYS WELCOME. ";
+      msg += "Subject to votes of disapproval of course.";
       return API.sendChat(msg);
     };
 
@@ -1074,9 +1074,10 @@
 
     rulesCommand.prototype.functionality = function() {
       var msg;
-      msg = "1) Play good sound quality music. ";
-      msg += "2) Don't replay a song on the room history. 3) Max song limit 8 minutes. ";
-      msg += "4) DO NOT GO AWAY FROM KEYBOARD ON DECK! Please WOOT on DJ Booth and respect your fellow DJs!";
+      msg = "1) Be kind. No trolling. ";
+      msg += "2) Be open minded. Avoid racism and homophobia. ";
+      msg += "3) Be respectful towards everyone including mods. ";
+      msg += "4) Let your votes do the talking.";
       return API.sendChat(msg);
     };
 
@@ -1100,10 +1101,10 @@
 
     roomHelpCommand.prototype.functionality = function() {
       var msg1, msg2;
-      msg1 = "Welcome to the Dubstep Den! Create a playlist and populate it with songs from either YouTube or Soundcloud.  ";
-      msg1 += "Click the 'Join Waitlist' button and wait your turn to play music. Most electronic music allowed, type '/theme' for specifics.";
-      msg2 = "Stay active while waiting to play your song or I'll remove you.  Play good quality music that hasn't been played recently (check room history).  ";
-      msg2 += "Avoid over played artists like Skrillex. Ask a mod if you're unsure about your song choice";
+      msg1 = "Welcome to INDIE+! Create a playlist and populate it with songs from either YouTube, Soundcloud, or iTunes.  ";
+      msg1 += "Click the 'Join Waitlist/Click to DJ' button and wait your turn to play music. Type '/theme' for specific genres.";
+      msg2 = "Play good quality music that hasn't been played recently (check room history).  ";
+      msg2 += "Avoid over played artists. Ask a mod if you're unsure about your song choice";
       API.sendChat(msg1);
       return setTimeout((function() {
         return API.sendChat(msg2);
@@ -1130,7 +1131,7 @@
 
     sourceCommand.prototype.functionality = function() {
       var msg;
-      msg = 'Backus wrote me in CoffeeScript.  A generalized version of me should be available on github soon!';
+      msg = 'Originally Backus wrote me in CoffeeScript. I was edited/updated by INDIE+';
       return API.sendChat(msg);
     };
 
@@ -1154,7 +1155,7 @@
 
     wootCommand.prototype.functionality = function() {
       var msg, nameIndex;
-      msg = "Please WOOT on DJ Booth and support your fellow DJs! AutoWoot: http://bit.ly/Lwcis0";
+      msg = "DANCE!";
       if ((nameIndex = this.msgData.message.indexOf('@')) !== -1) {
         return API.sendChat(this.msgData.message.substr(nameIndex) + ', ' + msg);
       } else {
@@ -1425,7 +1426,7 @@
     };
 
     lockCommand.prototype.functionality = function() {
-      API.sendChat('Pop and lock dat ish');
+      'Pop and lock dat ish';
       return data.lockBooth();
     };
 
@@ -1448,7 +1449,7 @@
     };
 
     unlockCommand.prototype.functionality = function() {
-      API.sendChat('You\'ll never get the key to unlock my heart');
+      'You\'ll never get the key to unlock my heart';
       return data.unlockBooth();
     };
 
@@ -1666,7 +1667,7 @@
     }
 
     overplayedCommand.prototype.init = function() {
-      this.command = '/overplayed';
+      this.command = '';
       this.parseType = 'exact';
       return this.rankPrivelege = 'user';
     };
@@ -1688,7 +1689,7 @@
     }
 
     uservoiceCommand.prototype.init = function() {
-      this.command = ['/uservoice', '/idea'];
+      this.command = '';
       this.parseType = 'exact';
       return this.rankPrivelege = 'user';
     };
@@ -1735,7 +1736,7 @@
     }
 
     whyMehCommand.prototype.init = function() {
-      this.command = '/whymeh';
+      this.command = '';
       this.parseType = 'exact';
       return this.rankPrivelege = 'user';
     };
@@ -2008,7 +2009,7 @@
     if (data.currentsong === null) {
       data.newSong();
     } else {
-      API.sendChat("/em: Just played " + data.currentsong.title + " by " + data.currentsong.author + ". Stats: Woots: " + data.currentwoots + ", Mehs: " + data.currentmehs + ", Loves: " + data.currentcurates + ".");
+      "/em: Just played " + data.currentsong.title + " by " + data.currentsong.author + ". Stats: Woots: " + data.currentwoots + ", Mehs: " + data.currentmehs + ", Loves: " + data.currentcurates + ".";
       data.newSong();
       document.getElementById("button-vote-positive").click();
     }

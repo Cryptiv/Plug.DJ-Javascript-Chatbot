@@ -72,7 +72,7 @@ class settings
 		@songCount++
 		for msg in @songIntervalMessages
 			if ((@songCount+msg['offset']) % msg['interval']) == 0
-				API.sendChat msg['msg']
+				msg['msg']
 
 	implode: =>
 		for item,val of @
@@ -227,7 +227,7 @@ afkCheck = ->
         secsLastActive = timeSinceLastActivity / 1000
         if user.getWarningCount() == 0
           user.warn()
-          API.sendChat "@"+user.getUser().username+", I haven't seen you chat or vote in at least 12 minutes. Are you AFK?  If you don't show activity in 2 minutes I will remove you."
+          "@"+user.getUser().username+", I haven't seen you chat or vote in at least 12 minutes. Are you AFK?  If you don't show activity in 2 minutes I will remove you."
         else if user.getWarningCount() == 1
           lastWarned = user.getLastWarning()#last time user was warned
           timeSinceLastWarning = now.getTime() - lastWarned.getTime()
@@ -236,7 +236,7 @@ afkCheck = ->
             user.warn()
             warnMsg = "@"+user.getUser().username
             warnMsg += ", I haven't seen you chat or vote in at least 14 minutes now.  This is your second and FINAL warning.  If you do not chat or vote in the next minute I will remove you."
-            API.sendChat warnMsg
+            warnMsg
         else if user.getWarningCount() == 2#Time to remove
           lastWarned = user.getLastWarning()#last time user was warned
           timeSinceLastWarning = now.getTime() - lastWarned.getTime()
@@ -244,8 +244,7 @@ afkCheck = ->
           if timeSinceLastWarning > oneMinute
             DJs = API.getDJs()
             if DJs.length > 0 and DJs[0].id != user.getUser().id
-              API.sendChat "@"+user.getUser().username+", you had 2 warnings. Please stay active by chatting or voting."
-              API.moderateRemoveDJ id
+              "@"+user.getUser().username+", you had 2 warnings. Please stay active by chatting or voting."
               user.warn()
       else
         user.notDj()
@@ -500,7 +499,7 @@ class cmdHelpCommand extends Command
 
 class hugCommand extends Command
 	init: ->
-		@command='hugs pup'
+		@command='hugs bot'
 		@parseType='exact'
 		@rankPrivelege='user'
 
@@ -510,20 +509,20 @@ class hugCommand extends Command
 
 class tacoCommand extends Command
 	init: ->
-		@command='taco'
+		@command='pizza'
 		@parseType='startsWith'
 		@rankPrivelege='user'
 
 	randomTaco: ->
 		tacos = [
-				"Mexican Pizza",
-				"Chicken Soft Taco",
-				"Double Decker Taco",
-				"Volcano Taco Supreme",
-				"Crunchy Taco Supreme",
-				"Grilled Steak Soft Taco",
-				"Cheesy Gordita Crunch",
-				"Doritos Locos Taco"
+				"cheese pizza",
+				"pepperoni pizza",
+				"hawaiian pizza",
+				"BBQ chicken pizza",
+				"anchovies pizza",
+				"DNCH turkey pizza",
+				"Adam's pepperoni pizza",
+				"vegan pizza"
 			];
 		r = Math.floor Math.random()*tacos.length
 		return tacos[r]
@@ -587,6 +586,9 @@ class punishCommand extends Command
 			"/me penetrates @{victim} with a sharpie"
 			"/me pinches @{victim}'s nipples super hard"
 			"/me gives @{victim} a wet willy"
+			"/me pulls @{victim}'s hair out"
+			"/me gives @{victim} a paper cut"
+			"/me ties @{victim} upside down by their ankles"
 		]
 		p = Math.floor Math.random()*punishments.length
 		punishment = punishments[p].replace('{victim}',username)
@@ -645,10 +647,8 @@ class newSongsCommand extends Command
 			selections['artist'] = chooseRandom arts
 
 		msg = "Everyone's heard that " + selections['artist'] +
-		" track! Get new music from http://youtube.com/" + selections['channels'][0] +
-		" http://youtube.com/" + selections['channels'][1] + 
-		" or http://youtube.com/" + selections['channels'][2];
-
+		" track! Get new music from " + selections['channels'][0] + " , "
+		+ selections['channels'][1] + " or " + selections['channels'][2];
 		API.sendChat(msg)
 
 	# memChanLen = memberChannels.length
@@ -664,58 +664,19 @@ class newSongsCommand extends Command
  #      API.sendChat "Everyone's heard that " + artists[a1] + " track! Get new music from http://youtube.com/" + mchan1 + " http://youtube.com/" + mchan2 + " or http://youtube.com/" + chan
 		
 	memberChannels: [
-		"JitterStep",
-		"MistaDubstep",
-		"DubStationPromotions",
-		"UndergroundDubstep",
-		"JesusDied4Dubstep",
-		"DarkstepWarrior",
-		"BombshockDubstep",
-		"Sharestep"
+		"http://www.youtube.com/indieplus4"
 	]
 	channels: [
-		"BassRape",
-		"Mudstep",
-		"WobbleCraftDubz",
-		"MonstercatMedia",
-		"UKFdubstep",
-		"DropThatBassline",
-		"Dubstep",
-		"VitalDubstep",
-		"AirwaveDubstepTV",
-		"EpicNetworkMusic",
-		"NoOffenseDubstep",
-		"InspectorDubplate",
-		"ReptileDubstep",
-		"MrMoMDubstep",
-		"FrixionNetwork",
-		"IcyDubstep",
-		"DubstepWeed",
-		"VhileMusic",
-		"LessThan3Dubstep",
-		"PleaseMindTheDUBstep",
-		"ClownDubstep",
-		"TheULTRADUBSTEP",
-		"DuBM0nkeyz",
-		"DubNationUK",
-		"TehDubstepChannel",
-		"BassDropMedia",
-		"USdubstep",
-		"UNITEDubstep" 
+		"http://thekollection.com/category/indie/",
+		"http://wearehunted.com/a/#/emerging/",
+		"http://www.facebook.com/FringeMusicFix",
+		"http://www.youtube.com/musicianswanted"
 	]
 	artists: [
-		"Skrillex",
-		"Doctor P",
-		"Excision",
-		"Flux Pavilion",
-		"Knife Party",
-		"Krewella",
-		"Rusko",
-		"Bassnectar",
-		"Nero",
-		"Deadmau5"
-		"Borgore"
-		"Zomboy"
+		"Taylor Swift",
+		"Justin Beiber",
+		"One Direction",
+		"Kanye West"
 	]
 
 
@@ -726,9 +687,7 @@ class whyWootCommand extends Command
 		@rankPrivelege='user'
 
 	functionality: ->
-		msg = "We dislike AFK djs. We calculate your AFK status by checking the last time you
-			Woot'd or spoke. If you don't woot, I'll automagically remove you. Use our AutoWoot
-			script to avoid being removed: http://bit.ly/McZdWw"
+		msg = "It's nice and you get points."
 
 		if((nameIndex = @msgData.message.indexOf('@')) != -1)
 			API.sendChat @msgData.message.substr(nameIndex) + ', ' + msg
@@ -742,8 +701,8 @@ class themeCommand extends Command
 		@rankPrivelege='user'
 
 	functionality: ->
-		msg = "Any type of Bass Music is allowed here. Including Dubstep, Complextro, Drum and Bass, "
-		msg += "Garage, Breakbeat, Hardstyle, Moombahton, HEAVY EDM, House, Electro, and Trance!!"
+		msg = "We play primarily Indie Rock, Pop, Folk and Electronic but ALL GENRES ARE ALWAYS WELCOME. "
+		msg += "Subject to votes of disapproval of course."
 		API.sendChat(msg)
 
 
@@ -754,9 +713,10 @@ class rulesCommand extends Command
 		@rankPrivelege='user'
 
 	functionality: ->
-		msg = "1) Play good sound quality music. "
-		msg += "2) Don't replay a song on the room history. 3) Max song limit 8 minutes. "
-		msg += "4) DO NOT GO AWAY FROM KEYBOARD ON DECK! Please WOOT on DJ Booth and respect your fellow DJs!"
+		msg = "1) Be kind. No trolling. "
+		msg += "2) Be open minded. Avoid racism and homophobia. "
+		msg += "3) Be respectful towards everyone including mods. "
+		msg += "4) Let your votes do the talking."
 		API.sendChat(msg)
 		
 
@@ -768,11 +728,11 @@ class roomHelpCommand extends Command
 		@rankPrivelege='user'
 
 	functionality: ->
-		msg1 = "Welcome to the Dubstep Den! Create a playlist and populate it with songs from either YouTube or Soundcloud.  "
-		msg1+= "Click the 'Join Waitlist' button and wait your turn to play music. Most electronic music allowed, type '/theme' for specifics."
+		msg1 = "Welcome to INDIE+! Create a playlist and populate it with songs from either YouTube, Soundcloud, or iTunes.  "
+		msg1+= "Click the 'Join Waitlist/Click to DJ' button and wait your turn to play music. Type '/theme' for specific genres."
 
-		msg2 = "Stay active while waiting to play your song or I'll remove you.  Play good quality music that hasn't been played recently (check room history).  "
-		msg2+= "Avoid over played artists like Skrillex. Ask a mod if you're unsure about your song choice"
+		msg2 = "Play good quality music that hasn't been played recently (check room history).  "
+		msg2+= "Avoid over played artists. Ask a mod if you're unsure about your song choice"
 		API.sendChat(msg1)
 		setTimeout (-> API.sendChat msg2), 750
 		
@@ -785,7 +745,7 @@ class sourceCommand extends Command
 		@rankPrivelege='user'
 
 	functionality: ->
-		msg = 'Backus wrote me in CoffeeScript.  A generalized version of me should be available on github soon!'
+		msg = 'Originally Backus wrote me in CoffeeScript. I was edited/updated by INDIE+'
 		API.sendChat msg
 
 class wootCommand extends Command
@@ -795,7 +755,7 @@ class wootCommand extends Command
 		@rankPrivelege='user'
 
 	functionality: ->
-		msg = "Please WOOT on DJ Booth and support your fellow DJs! AutoWoot: http://bit.ly/Lwcis0"
+		msg = "DANCE!"
 		if((nameIndex = @msgData.message.indexOf('@')) != -1)
 			API.sendChat @msgData.message.substr(nameIndex) + ', ' + msg
 		else
@@ -946,7 +906,7 @@ class lockCommand extends Command
 		@rankPrivelege='mod'
 
 	functionality: ->
-		API.sendChat 'Pop and lock dat ish'
+		'Pop and lock dat ish'
 		data.lockBooth()
 
 
@@ -957,7 +917,7 @@ class unlockCommand extends Command
 		@rankPrivelege='mod'
 
 	functionality: ->
-		API.sendChat 'You\'ll never get the key to unlock my heart'
+		'You\'ll never get the key to unlock my heart'
 		data.unlockBooth()
 
 
@@ -1080,7 +1040,7 @@ class fbCommand extends Command
 
 class overplayedCommand extends Command
 	init: ->
-		@command='/overplayed'
+		@command=''
 		@parseType='exact'
 		@rankPrivelege='user'
 
@@ -1091,7 +1051,7 @@ class overplayedCommand extends Command
 
 class uservoiceCommand extends Command
 	init: ->
-		@command=['/uservoice','/idea']
+		@command=''
 		@parseType='exact'
 		@rankPrivelege='user'
 
@@ -1114,7 +1074,7 @@ class skipCommand extends Command
 
 class whyMehCommand extends Command
 	init: ->
-		@command='/whymeh'
+		@command=''
 		@parseType='exact'
 		@rankPrivelege='user'
 
@@ -1301,7 +1261,7 @@ chatCommandDispatcher = (chat)->
     	if c.evalMsg()
     		break
 
-
+﻿
 updateVotes = (obj) ->
     data.currentwoots = obj.positive
     data.currentmehs = obj.negative
@@ -1325,7 +1285,7 @@ handleNewSong = (obj) ->
     if(data.currentsong == null)
         data.newSong()#first song since launch
     else
-        API.sendChat "/em: Just played " + data.currentsong.title + " by " + data.currentsong.author + ". Stats: Woots: " + data.currentwoots + ", Mehs: " + data.currentmehs + ", Loves: " + data.currentcurates + "."
+        "/em: Just played " + data.currentsong.title + " by " + data.currentsong.author + ". Stats: Woots: " + data.currentwoots + ", Mehs: " + data.currentmehs + ", Loves: " + data.currentcurates + "."
         data.newSong()
         document.getElementById("button-vote-positive").click()
     if data.forceSkip # skip songs when song is over
