@@ -19,14 +19,12 @@ class tacoCommand extends Command
 		return tacos[t]
 
 	functionality: ->
-        msg = @msgData.message
-        r = new RoomHelper()
-        taco = @randomTaco()
-        if(msg.substring(5, 6) == "@")
-	        tacoName = msg.substring(6)
-	        if tacoName == '#Wolf Pup'
-	        	API.sendChat "No thanks I'll get fat :("
-	        else
-	        	API.sendChat "Yo @" + tacoName + ", " + @msgData.from + " just gave you a " + taco + "!"
-        else
-	        API.sendChat "Yo @" + @msgData.from + ", here is your " + taco + "!"
+		msg = @msgData.message
+		r = new RoomHelper()
+		if msg.length > 8 #includes username
+			user = r.lookupUser(msg.substr(8))
+			if user == false
+				API.sendChat "/em doesn't see '"+msg.substr(8)+"' in room and eats pizza himself"
+				return false
+			else
+				API.sendChat "@"+user.username+", @"+@msgData.from+" has rewarded you with some "+@randomTaco()+"."
