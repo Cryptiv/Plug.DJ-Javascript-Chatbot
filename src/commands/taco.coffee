@@ -15,8 +15,8 @@ class tacoCommand extends Command
 				"Adam's pepperoni pizza",
 				"vegan pizza"
 			];
-		r = Math.floor Math.random()*tacos.length
-		return tacos[r]
+		t = Math.floor Math.random()*tacos.length
+		return tacos[t]
 
 	functionality: ->
         msg = @msgData.message
