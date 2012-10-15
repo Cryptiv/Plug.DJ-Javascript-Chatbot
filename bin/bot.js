@@ -838,13 +838,14 @@
     };
 
     tacoCommand.prototype.functionality = function() {
-      var msg, r, user;
+      var msg, name, r, user;
       msg = this.msgData.message;
       r = new RoomHelper();
       if (msg.length > 8) {
-        user = r.lookupUser(msg.substr(8));
+        name = msg.substr(8);
+        user = r.lookupUser(name);
         if (user === false) {
-          API.sendChat("/em doesn't see '" + msg.substr(8) + "' in room and eats pizza himself");
+          API.sendChat("/em doesn't see '" + name + "' in room and eats pizza himself");
           return false;
         } else {
           return API.sendChat("@" + user.username + ", @" + this.msgData.from + " has rewarded you with some " + this.randomTaco() + ".");
