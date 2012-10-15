@@ -20,6 +20,7 @@ class tacoCommand extends Command
 
 	functionality: ->
         msg = @msgData.message
+        r = new RoomHelper()
         taco = @randomTaco()
         if(msg.substring(5, 6) == "@")
 	        tacoName = msg.substring(6)
