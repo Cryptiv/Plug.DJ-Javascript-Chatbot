@@ -530,8 +530,8 @@ class tacoCommand extends Command
 	functionality: ->
 		msg = @msgData.message
 		r = new RoomHelper()
-		if msg.length > 6 #includes username
-			name = msg.substr(6)
+		if msg.length > 7 #includes username
+			name = msg.substr(7)
 			user = r.lookupUser name
 			if user == false
 				API.sendChat "/em doesn't see '"+name+"' in room and eats pizza himself"

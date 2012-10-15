@@ -841,8 +841,8 @@
       var msg, name, r, user;
       msg = this.msgData.message;
       r = new RoomHelper();
-      if (msg.length > 6) {
-        name = msg.substr(6);
+      if (msg.length > 7) {
+        name = msg.substr(7);
         user = r.lookupUser(name);
         if (user === false) {
           API.sendChat("/em doesn't see '" + name + "' in room and eats pizza himself");
