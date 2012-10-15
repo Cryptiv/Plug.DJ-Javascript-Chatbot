@@ -831,25 +831,24 @@
     };
 
     tacoCommand.prototype.randomTaco = function() {
-      var r, tacos;
+      var t, tacos;
       tacos = ["cheese pizza", "pepperoni pizza", "hawaiian pizza", "BBQ chicken pizza", "anchovies pizza", "DNCH turkey pizza", "Adam's pepperoni pizza", "vegan pizza"];
-      r = Math.floor(Math.random() * tacos.length);
-      return tacos[r];
+      t = Math.floor(Math.random() * tacos.length);
+      return tacos[t];
     };
 
     tacoCommand.prototype.functionality = function() {
-      var msg, taco, tacoName;
+      var msg, r, user;
       msg = this.msgData.message;
-      taco = this.randomTaco();
-      if (msg.substring(5, 6) === "@") {
-        tacoName = msg.substring(6);
-        if (tacoName === '#Wolf Pup') {
-          return API.sendChat("No thanks I'll get fat :(");
+      r = new RoomHelper();
+      if (msg.length > 8) {
+        user = r.lookupUser(msg.substr(8));
+        if (user === false) {
+          API.sendChat("/em doesn't see '" + msg.substr(8) + "' in room and eats pizza himself");
+          return false;
         } else {
-          return API.sendChat("Yo @" + tacoName + ", " + this.msgData.from + " just gave you a " + taco + "!");
+          return API.sendChat("@" + user.username + ", @" + this.msgData.from + " has rewarded you with some " + this.randomTaco() + ".");
         }
-      } else {
-        return API.sendChat("Yo @" + this.msgData.from + ", here is your " + taco + "!");
       }
     };
 
