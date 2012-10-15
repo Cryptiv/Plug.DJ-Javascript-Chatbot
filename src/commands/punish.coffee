@@ -15,7 +15,7 @@ class punishCommand extends Command
 			"/me gives @{victim} a wet willy"
 			"/me pulls @{victim}'s hair out"
 			"/me gives @{victim} a paper cut"
-			"/me ties @{victim} upside down by their ankles"
+			"/me  ties @{victim} at the ankles with skipping rope and hangs him upside down over an audience of wild boars in heat."
 		]
 		p = Math.floor Math.random()*punishments.length
 		punishment = punishments[p].replace('{victim}',username)
