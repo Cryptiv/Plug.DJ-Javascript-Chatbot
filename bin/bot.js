@@ -841,14 +841,14 @@
       var msg, name, r, user;
       msg = this.msgData.message;
       r = new RoomHelper();
-      if (msg.length > 8) {
-        name = msg.substr(8);
+      if (msg.length > 6) {
+        name = msg.substr(6);
         user = r.lookupUser(name);
         if (user === false) {
           API.sendChat("/em doesn't see '" + name + "' in room and eats pizza himself");
           return false;
         } else {
-          return API.sendChat("@" + user.username + ", @" + this.msgData.from + " has rewarded you with some " + this.randomTaco() + ".");
+          return API.sendChat("@" + user.username + ", @" + this.msgData.from + " has given you some " + this.randomTaco() + ".");
         }
       }
     };
